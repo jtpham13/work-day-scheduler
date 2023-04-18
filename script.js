@@ -2,9 +2,7 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 
-// get all the buttons
-//add a listener to each button
-// console.log("pressed")
+
 var saveButtons = document.querySelectorAll(".btn");
 console.log(saveButtons)
 saveButtons.forEach(function(individualButton){
@@ -19,12 +17,14 @@ function saveTask(event){
   console.log(targetTextArea)
   var currentParent = event.target.parentElement
   console.log(currentParent)
-  //key needs to be a string an a unique identifier
-  // key will need to be what? 
-  // value, what you want to save in the storage
-  // value will be what is written in my text area
-  
+  var textArea = currentParent.children[1]
+  console.log(textArea.value)
+  var textAreaVal = textArea.value
+  localStorage.setItem("task", textAreaVal)
+ 
 }
+  var getTask = localStorage.getItem("task")
+  textArea.innerHTML = getTask
 
 //when the listener is confirmed, we want to get the text area next to the button that was selected
 //the text area is a sibling to the button
