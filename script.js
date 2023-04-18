@@ -21,10 +21,9 @@ function saveTask(event){
   console.log(textArea.value)
   var textAreaVal = textArea.value
   localStorage.setItem("task", textAreaVal)
- 
+   var getTask = localStorage.getItem("task")
 }
-  var getTask = localStorage.getItem("task")
-  textArea.innerHTML = getTask
+ 
 
 //when the listener is confirmed, we want to get the text area next to the button that was selected
 //the text area is a sibling to the button
