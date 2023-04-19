@@ -8,22 +8,41 @@ console.log(saveButtons)
 saveButtons.forEach(function(individualButton){
   individualButton.addEventListener("click", saveTask)
 })
+var hour = ''
+var task = ''
+var saveTasks = {
+  "hour": hour, 
+  "task": task,
+}
+
+var storedTasks = []
+
+var savedTasks = localStorage.getItem(JSON.parse("task"))
+if(savedTasks!==null){
+  storedTasks.push(savedTasks)
+}
+
+function renderTask(){
+
+}
+
+
 
 function saveTask(event){
   console.log("pressed")
   console.log(event)
   console.log(event.target)
-  var targetTextArea = event.target.previousElementSibling
+  var targetTextArea = $(event.target).parent().parent().children(".description").val()
   console.log(targetTextArea)
-  var currentParent = event.target.parentElement
-  console.log(currentParent)
-  var textArea = currentParent.children[1]
-  console.log(textArea.value)
-  var textAreaVal = textArea.value
-  localStorage.setItem("task", textAreaVal)
+
+  var taskHour = $(event.target).parent().parent().find("#hour-9").val()
+  console.log(taskHour)
+ 
+  // localStorage.setItem("task", )
    var getTask = localStorage.getItem("task")
 }
  
+
 
 //when the listener is confirmed, we want to get the text area next to the button that was selected
 //the text area is a sibling to the button
@@ -45,10 +64,27 @@ $(function () {
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
   //
+
+  var currentHr = dayjs().format("HH");
+  var hourId = [9, 10, 11, 12, 13, 14, 15, 16, 17];
+  $(hourId).each(function(i, hourId){
+    if(hourId < currentHr){
+      $("#"+ hourId).addClass("past")
+    }
+    else if(hourId == currentHr){
+      $("#"+ hourId).addClass("present")
+    }
+    else if(hourId > currentHr){
+      $("#"+ hourId).addClass("future")
+  
+    }
+  })
+
+
+
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
   // TODO: Add code to display the current date in the header of the page.
 });
-
