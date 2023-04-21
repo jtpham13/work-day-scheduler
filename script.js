@@ -2,55 +2,53 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 
-
 var saveButtons = document.querySelectorAll(".btn");
-console.log(saveButtons)
-saveButtons.forEach(function(individualButton){
-  individualButton.addEventListener("click", saveTask)
-})
-var hour = ''
-var task = ''
+console.log(saveButtons);
+saveButtons.forEach(function (individualButton) {
+  individualButton.addEventListener("click", saveTask);
+});
+var hour = "";
+var task = "";
 var saveTasks = {
-  "hour": hour, 
-  "task": task,
+  hour: hour,
+  task: task,
+};
+
+var storedTasks = [];
+var storageTask = localStorage.setItem("task", JSON.stringify(saveTasks));
+
+function init() {
+  var savedTasks = JSON.parse(localStorage.getItem("task"));
+  if (savedTasks !== null) {
+    storedTasks.push(savedTasks);
+  }
+  renderTask();
 }
 
-var storedTasks = []
+function renderTask() {}
 
-var savedTasks = localStorage.getItem(JSON.parse("task"))
-if(savedTasks!==null){
-  storedTasks.push(savedTasks)
-}
+function saveTask(event) {
+  console.log("saveTask() called");
+  console.log(event);
+  console.log(event.target);
+  var targetTextArea = $(event.target)
+    .parent()
+    .parent()
+    .children(".description")
+    
+  console.log(targetTextArea);
 
-function renderTask(){
+  var taskHour = $(event.target).parent().parent().find("#hour");
+  console.log(taskHour);
 
-}
-
-
-
-function saveTask(event){
-  console.log("pressed")
-  console.log(event)
-  console.log(event.target)
-  var targetTextArea = $(event.target).parent().parent().children(".description").val()
-  console.log(targetTextArea)
-
-  var taskHour = $(event.target).parent().parent().find("#hour-9").val()
-  console.log(taskHour)
- 
   // localStorage.setItem("task", )
-   var getTask = localStorage.getItem("task")
+  var getTask = JSON.parse(localStorage.getItem("task"));
 }
- 
-
 
 //when the listener is confirmed, we want to get the text area next to the button that was selected
 //the text area is a sibling to the button
 
-
 $(function () {
-
-
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -67,20 +65,15 @@ $(function () {
 
   var currentHr = dayjs().format("HH");
   var hourId = [9, 10, 11, 12, 13, 14, 15, 16, 17];
-  $(hourId).each(function(i, hourId){
-    if(hourId < currentHr){
-      $("#"+ hourId).addClass("past")
+  $(hourId).each(function (i, hour) {
+    if (hour < currentHr) {
+      $("#" + hourId).addClass("past");
+    } else if (hour == currentHr) {
+      $("#" + hour).addClass("present");
+    } else if (hour > currentHr) {
+      $("#" + hour).addClass("future");
     }
-    else if(hourId == currentHr){
-      $("#"+ hourId).addClass("present")
-    }
-    else if(hourId > currentHr){
-      $("#"+ hourId).addClass("future")
-  
-    }
-  })
-
-
+  });
 
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
