@@ -1,15 +1,15 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-
+// added a button for each hour
 var saveButtons = document.querySelectorAll(".btn");
 console.log(saveButtons);
 saveButtons.forEach(function (individualButton) {
   individualButton.addEventListener("click", saveTask);
 });
+
+
+// saving event to each time in local storage 
 var hour = "";
 var task = "";
-var saveTasks = {
+var saveasks = {
   hour: hour,
   task: task,
 };
@@ -25,7 +25,13 @@ function init() {
   renderTask();
 }
 
-function renderTask() {}
+function renderTask() {
+  var savedTasks = JSON.parse(localStorage.getItem("task")) || [];
+  savedTasks.forEach(function (task) {
+    var hourBlock = $(".hour-block[data-hour='" + task.hour + "']");
+    hourBlock.find(".description").val(task.description);
+  });
+}
 
 function saveTask(event) {
   console.log("saveTask() called");
@@ -35,49 +41,47 @@ function saveTask(event) {
     .parent()
     .parent()
     .children(".description")
-    
+    .val();
+  var savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
   console.log(targetTextArea);
 
-  var taskHour = $(event.target).parent().parent().find("#hour");
-  console.log(taskHour);
+  var task = {
+    hour: taskHour,
+    description: targetTextArea,
+  };
 
-  // localStorage.setItem("task", )
-  var getTask = JSON.parse(localStorage.getItem("task"));
+  var savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  savedTasks.push(task);
+
+  var taskHour = $(event.target).parent().parent().find("#hour-9").val();
+  console.log(taskHour);
+}
+//  Added code to display the current date in the header of the page.
+var currentDate = dayjs().format("dddd, MMMM D");
+$("#currentDay").text(currentDate);
+
+
+//  changing the hour to be current 
+var currentHr = dayjs().format("HH");
+var timeId = [9, 10, 12 ,13 ,14 , 15, 16, 17];
+console.log(timeId);
+console.log(typeof timeId);
+
+$(timeId).each(function(i, hour){
+  if(hour < currentHr){
+    $("#" + hour).addClass("past//")
+
+  }
+  
+}
+else if(hour == currentHr){
+  $("#" + hour).addClass("present")
 }
 
-//when the listener is confirmed, we want to get the text area next to the button that was selected
-//the text area is a sibling to the button
+else if(hour > currentHr){
+  $("#" + hour).addClass("#future")
+}
 
-$(function () {
-  // TODO: Add a listener for click events on the save button. This code should
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
-  //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
-
-  var currentHr = dayjs().format("HH");
-  var hourId = [9, 10, 11, 12, 13, 14, 15, 16, 17];
-  $(hourId).each(function (i, hour) {
-    if (hour < currentHr) {
-      $("#" + hourId).addClass("past");
-    } else if (hour == currentHr) {
-      $("#" + hour).addClass("present");
-    } else if (hour > currentHr) {
-      $("#" + hour).addClass("future");
-    }
-  });
-
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
-  // TODO: Add code to display the current date in the header of the page.
-});
+)
