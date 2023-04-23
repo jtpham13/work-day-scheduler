@@ -58,6 +58,21 @@ function saveTask(event) {
   console.log(taskHour);
 
 }
+// added code to display current and past colorblock 
+var currentHr = dayjs().format("HH");
+var timeId = [9, 10, 11, 12, 13, 14, 15, 16, 17];
+
+$(timeId).each(function(i, hour){
+  var hourBlock = $("#hour-" + hour); 
+  if (hour < currentHr){
+    hourBlock.toggleClass("past, true");
+  } else if (hour == currentHr){
+    hourBlock.toggleClass("present", true); 
+  } else if (hour > currentHr){
+    hourBlock.toggleClass("future", true);
+  }
+});
+
 
 
 //  Added code to display the current date in the header of the page.
